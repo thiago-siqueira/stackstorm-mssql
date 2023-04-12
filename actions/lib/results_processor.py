@@ -1,5 +1,5 @@
 import six
-import _mssql
+import pymssql._mssql
 from tempfile import NamedTemporaryFile
 import csv
 import os
@@ -64,7 +64,7 @@ class ResultsProcessor(object):
                     # pylint: disable=no-member
                     # Grab the first row so we can read the headers and write them to the CSV
                     first_row = self._filter_numbered_columns(
-                        next(cursor.get_iterator(_mssql.ROW_FORMAT_DICT)))
+                        next(cursor.get_iterator(pymssql._mssql.ROW_FORMAT_DICT)))
                 except StopIteration:
                     # the last result set will always be empty, so remove the file created for it
                     os.unlink(csv_file.name)

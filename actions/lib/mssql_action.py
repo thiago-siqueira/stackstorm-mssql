@@ -1,5 +1,5 @@
 import six
-import _mssql
+import pymssql._mssql
 
 from st2common.runners.base_action import Action
 
@@ -12,7 +12,7 @@ class MSSQLAction(Action):
 
     def connect(self, database=None, server=None, user=None, password=None):
         # pylint: disable=no-member
-        return _mssql.connect(**self._connect_params(database, server, user, password))
+        return pymssql._mssql.connect(**self._connect_params(database, server, user, password))
 
     def _connect_params(self, database=None, server=None, user=None, password=None):
         database = database or self.config.get('default')

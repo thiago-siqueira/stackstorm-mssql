@@ -1,4 +1,4 @@
-import _mssql
+import pymssql._mssql
 import ast
 import sys
 
@@ -13,7 +13,7 @@ class MSSQLRunner(MSSQLAction):
     The query_string accepts Python formatting. Please see README for details.
     """
 
-    # Pack actions map to a pair of methods: PyMSSQL (_mssql) driver and ResultsProcessor handler
+    # Pack actions map to a pair of methods: PyMSSQL (pymssql._mssql) driver and ResultsProcessor handler
     ACTION_MAPPING = {
         'execute_insert': ('execute_non_query', 'execute_insert')
         # default: (action_name, action_name)
@@ -26,12 +26,12 @@ class MSSQLRunner(MSSQLAction):
     def run(self, action, query_string, params=None,
             database=None, server=None, user=None, password=None):
         try:
-            # action corresponds to a pair of _mssql and ResultsProcessor methods
+            # action corresponds to a pair of pymssql._mssql and ResultsProcessor methods
             driver_action, processor_action = self.ACTION_MAPPING.get(action, (action, action))
             with self.connect(database, server, user, password) as cursor:
                 params = ast.literal_eval(params) if params else None
                 response = getattr(cursor, driver_action)(query_string, params)
                 return getattr(self.processor, processor_action)(response, cursor)
-        except _mssql.MSSQLException as e:  # pylint: disable=no-member
+        except pymssql._mssql.MSSQLException as e:  # pylint: disable=no-member
             self.logger.error(e)
             sys.exit(1)
