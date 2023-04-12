@@ -85,7 +85,7 @@ class ResultsProcessor(object):
     def _get_output_file(self, prefix='mssql-query.', suffix='.csv'):
         output_config = self.config.get('output_csv', {})
         return NamedTemporaryFile(
-            mode='w'
+            mode='w',
             dir=output_config.get('directory', None),
             prefix=output_config.get('output_prefix', prefix),
             suffix=output_config.get('output_suffix', suffix),
